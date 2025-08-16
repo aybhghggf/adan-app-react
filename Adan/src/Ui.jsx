@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import GlobalLoadingOverlay from "./Loading";
+
+// Mock GlobalLoadingOverlay component since it's not defined
+const GlobalLoadingOverlay = () => (
+  <div className="fixed inset-0 bg-white bg-opacity-90 flex items-center justify-center">
+    <div className="text-2xl text-gray-600">Loading...</div>
+  </div>
+);
 
 // All African countries with some major cities
 const countries = {
@@ -23,11 +29,13 @@ const PrayerTimes = ({ getParams, TimesOfAdan }) => {
 
   let cities = country ? countries[country] || [] : [];
 
-  getParams(city, country);
+  // Mock function if getParams is not provided
+  if (getParams) {
+    getParams(city, country);
+  }
 
   const timings = TimesOfAdan ? TimesOfAdan.data.data.timings : null;
   const date = TimesOfAdan ? TimesOfAdan.data.data.date : null;
-  console.log(date);
 
   useEffect(() => {
     if (timings) setLoading(false);
@@ -40,104 +48,201 @@ const PrayerTimes = ({ getParams, TimesOfAdan }) => {
     <div
       className="flex flex-col items-center justify-center min-h-screen p-4 sm:p-6 lg:p-8"
       style={{
-        fontFamily: "'Manrope', sans-serif",
-        backgroundColor: "#f7fafc",
-        backgroundImage:
-          "url('https://images.unsplash.com/photo-1604420459383-7459178c1875?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
+        fontFamily: "'Amiri', 'Times New Roman', serif",
+        backgroundColor: "#faf8f5",
+        backgroundImage: `
+          radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.15) 0%, transparent 50%),
+          radial-gradient(circle at 80% 20%, rgba(255, 177, 153, 0.15) 0%, transparent 50%),
+          linear-gradient(135deg, #faf8f5 0%, #f4f1eb 100%)
+        `,
       }}
     >
       <style
         dangerouslySetInnerHTML={{
           __html: `
-            @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap');
+            @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap');
             @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+            
             :root {
-                --primary-green: #38e07b;
-                --soft-green: #eaf7f0;
-                --text-primary: #1a202c;
-                --text-secondary: #4a5568;
-                --border-color: #e2e8f0;
-                --card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-                --card-shadow-hover: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+                --primary-gold: #b8860b;
+                --soft-gold: #f5f5dc;
+                --warm-beige: #f7f3e9;
+                --text-primary: #2c1810;
+                --text-secondary: #5d4037;
+                --text-muted: #8d6e63;
+                --border-color: #d7ccc8;
+                --card-shadow: 0 2px 8px rgba(139, 69, 19, 0.1);
+                --card-shadow-hover: 0 8px 25px rgba(139, 69, 19, 0.15);
+                --accent-copper: #cd853f;
             }
+            
+            .arabic-pattern {
+                position: relative;
+                overflow: hidden;
+            }
+            
+            .arabic-pattern::before {
+                content: '';
+                position: absolute;
+                top: -2px;
+                left: -2px;
+                right: -2px;
+                bottom: -2px;
+                background: linear-gradient(45deg, 
+                  transparent 30%, 
+                  rgba(184, 134, 11, 0.1) 45%, 
+                  rgba(184, 134, 11, 0.2) 50%, 
+                  rgba(184, 134, 11, 0.1) 55%, 
+                  transparent 70%);
+                border-radius: 12px;
+                z-index: -1;
+            }
+            
             .prayer-card {
-                background-color: rgba(255, 255, 255, 0.8);
-                backdrop-filter: blur(10px);
-                border-radius: 0.75rem;
-                padding: 1.5rem;
+                background: linear-gradient(135deg, #ffffff 0%, #fefdfb 100%);
+                border-radius: 10px;
+                padding: 1.75rem;
                 box-shadow: var(--card-shadow);
-                transition: all 0.3s ease-in-out;
+                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-                border-left: 5px solid transparent;
+                border: 1px solid var(--border-color);
+                position: relative;
+                overflow: hidden;
             }
+            
+            .prayer-card::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 3px;
+                background: linear-gradient(90deg, transparent, var(--primary-gold), transparent);
+                transform: scaleX(0);
+                transition: transform 0.4s ease;
+            }
+            
             .prayer-card:hover {
-                transform: translateY(-5px);
+                transform: translateY(-8px);
                 box-shadow: var(--card-shadow-hover);
-                border-left-color: var(--primary-green);
+                border-color: var(--primary-gold);
             }
+            
+            .prayer-card:hover::after {
+                transform: scaleX(1);
+            }
+            
             .form-select {
                 display: block;
                 width: 100%;
-                padding: 0.75rem 1rem;
+                padding: 1rem 1.25rem;
                 font-size: 1rem;
-                color: #374151;
-                background-color: rgba(255, 255, 255, 0.8);
-                backdrop-filter: blur(4px);
-                border: 1px solid #d1d5db;
-                border-radius: 0.375rem;
-                transition: all 0.15s ease-in-out;
+                color: var(--text-primary);
+                background: linear-gradient(135deg, #ffffff 0%, #fefdfb 100%);
+                border: 2px solid var(--border-color);
+                border-radius: 8px;
+                transition: all 0.3s ease;
+                font-family: 'Noto Sans Arabic', sans-serif;
                 appearance: none;
+                background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+                background-position: right 1rem center;
+                background-repeat: no-repeat;
+                background-size: 1rem;
             }
+            
             .form-select:focus {
-                color: #374151;
-                background-color: white;
-                border-color: var(--primary-green);
+                border-color: var(--primary-gold);
                 outline: none;
+                box-shadow: 0 0 0 3px rgba(184, 134, 11, 0.1);
+                background-color: #ffffff;
             }
+            
             .main-content {
-                background-color: rgba(255, 255, 255, 0.7);
+                background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(254, 253, 251, 0.9) 100%);
                 backdrop-filter: blur(10px);
-                border-radius: 1rem;
-                padding: 2rem;
-                box-shadow: var(--card-shadow);
+                border-radius: 16px;
+                padding: 2.5rem;
+                box-shadow: 0 4px 20px rgba(139, 69, 19, 0.1);
+                border: 1px solid rgba(215, 204, 200, 0.5);
             }
+            
             .prayer-card.active {
-                border-left: 5px solid var(--primary-green);
-                background-color: rgba(234, 247, 240, 0.8);
-                box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+                background: linear-gradient(135deg, #f7f3e9 0%, #f5f5dc 100%);
+                border-color: var(--primary-gold);
+                box-shadow: 0 8px 25px rgba(184, 134, 11, 0.2);
+                transform: scale(1.02);
             }
+            
+            .prayer-card.active::after {
+                transform: scaleX(1);
+                background: var(--primary-gold);
+            }
+            
             .prayer-card.active .time {
-                color: var(--primary-green);
+                color: var(--primary-gold);
                 font-weight: 700;
             }
+            
             .prayer-card.active .icon {
-                color: var(--primary-green);
+                color: var(--primary-gold);
             }
+            
             .prayer-card .icon {
-                color: #9ca3af;
-                transition: color 0.3s ease;
+                color: var(--text-muted);
+                transition: all 0.3s ease;
             }
+            
             .prayer-card:hover .icon {
-                color: var(--primary-green);
+                color: var(--accent-copper);
+                transform: scale(1.1);
+            }
+            
+            .city-title {
+                font-family: 'Amiri', serif;
+                background: linear-gradient(135deg, var(--text-primary) 0%, var(--primary-gold) 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+            
+            .geometric-border {
+                position: relative;
+                padding: 1rem 0;
+            }
+            
+            .geometric-border::before,
+            .geometric-border::after {
+                content: '';
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 100px;
+                height: 2px;
+                background: linear-gradient(90deg, transparent, var(--primary-gold), transparent);
+            }
+            
+            .geometric-border::before {
+                top: 0;
+            }
+            
+            .geometric-border::after {
+                bottom: 0;
             }
           `,
         }}
       />
 
       <div className="w-full max-w-4xl mx-auto main-content">
-        <header className="mb-8">
+        <header className="mb-10">
           <div className="flex flex-col md:flex-row gap-4 mb-8">
             <div className="flex-1">
-              <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="country">
-                Country
+              <label className="block text-sm font-medium mb-3" style={{ color: "var(--text-secondary)", fontFamily: "'Noto Sans Arabic', sans-serif" }}>
+                البلد / Country
               </label>
               <select
-                className="form-select"
+                className="form-select arabic-pattern"
                 id="country"
                 name="country"
                 value={country}
@@ -155,11 +260,11 @@ const PrayerTimes = ({ getParams, TimesOfAdan }) => {
               </select>
             </div>
             <div className="flex-1">
-              <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="city">
-                City
+              <label className="block text-sm font-medium mb-3" style={{ color: "var(--text-secondary)", fontFamily: "'Noto Sans Arabic', sans-serif" }}>
+                المدينة / City
               </label>
               <select
-                className="form-select"
+                className="form-select arabic-pattern"
                 id="city"
                 name="city"
                 value={city}
@@ -176,11 +281,11 @@ const PrayerTimes = ({ getParams, TimesOfAdan }) => {
             </div>
           </div>
 
-          <div className="text-center">
-            <h1 className="text-4xl sm:text-5xl font-bold" style={{ color: "var(--text-primary)" }}>
-              {city || "Rabat"}
+          <div className="text-center geometric-border">
+            <h1 className="text-4xl sm:text-5xl font-bold city-title mb-2">
+              {city || "الرباط"}
             </h1>
-            <p className="mt-2 text-lg" style={{ color: "var(--text-secondary)" }}>
+            <p className="text-lg font-medium" style={{ color: "var(--text-secondary)", fontFamily: "'Noto Sans Arabic', sans-serif" }}>
               {date ? date.gregorian.date : "------"} <br />
               {date ? date.hijri.date : "------"}
             </p>
@@ -188,20 +293,30 @@ const PrayerTimes = ({ getParams, TimesOfAdan }) => {
         </header>
 
         <main className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {["Fajr", "Sunrise", "Dhuhr", "Asr", "Maghrib", "Isha"].map((prayer, i) => (
+          {[
+            { prayer: "Fajr", arabic: "الفجر" },
+            { prayer: "Sunrise", arabic: "الشروق" },
+            { prayer: "Dhuhr", arabic: "الظهر" },
+            { prayer: "Asr", arabic: "العصر" },
+            { prayer: "Maghrib", arabic: "المغرب" },
+            { prayer: "Isha", arabic: "العشاء" }
+          ].map(({ prayer, arabic }, i) => (
             <div
               key={prayer}
-              className={`prayer-card group ${prayer === "Dhuhr" ? "active" : ""}`}
+              className={`prayer-card group ${prayer === "Dhuhr" ? "" : ""}`}
             >
-              <div>
-                <h2 className="text-xl font-bold" style={{ color: "var(--text-primary)" }}>
-                  {prayer}
+              <div className="flex-1">
+                <h2 className="text-lg font-bold mb-1" style={{ color: "var(--text-primary)", fontFamily: "'Noto Sans Arabic', sans-serif" }}>
+                  {arabic}
                 </h2>
-                <p className={`text-3xl ${prayer === "Dhuhr" ? "font-bold time" : "font-light"} mt-2`} style={{ color: "var(--text-secondary)" }}>
+                <h3 className="text-sm font-medium mb-2" style={{ color: "var(--text-muted)" }}>
+                  {prayer}
+                </h3>
+                <p className={`text-2xl ${prayer === "Dhuhr" ? "font-bold time" : "font-light"}`} style={{ color: "var(--text-secondary)", fontFamily: "'Amiri', serif" }}>
                   {timings ? timings[prayer] : "--:--"}
                 </p>
               </div>
-              <i className="material-icons text-4xl icon">
+              <i className="material-icons text-3xl icon">
                 {{
                   Fajr: "wb_twilight",
                   Sunrise: "wb_sunny",
