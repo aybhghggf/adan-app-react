@@ -1,0 +1,45 @@
+@import "tailwindcss";
+:root {
+      --primary-green: #38e07b;
+      --soft-green: #eaf7f0;
+      --text-primary: #1a202c;
+      --text-secondary: #4a5568;
+      --border-color: #e2e8f0;
+      --card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+      --card-shadow-hover: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    }
+    body {
+      font-family: 'Manrope', sans-serif;
+      background-color: #f7fafc;
+      background-image: url('https://images.unsplash.com/photo-1604420459383-7459178c1875?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+    .prayer-card {
+      background-color: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(10px);
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+      box-shadow: var(--card-shadow);
+      transition: all 0.3s ease-in-out;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-left: 5px solid transparent;
+    }
+    .prayer-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--card-shadow-hover);
+      border-left-color: var(--primary-green);
+    }
+    .form-select {
+        @apply block w-full px-4 py-3 text-base text-gray-700 bg-white/80 backdrop-blur-sm bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded-md transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-[var(--primary-green)] focus:outline-none;
+    }
+    .main-content {
+      background-color: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(10px);
+      border-radius: 1rem;
+      padding: 2rem;
+      box-shadow: var(--card-shadow);
+    }
